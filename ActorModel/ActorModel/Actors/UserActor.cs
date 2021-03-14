@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ActorModel.Actors
@@ -20,6 +21,8 @@ namespace ActorModel.Actors
         private void HandlePlayMovieMessage(PlayMovieMessage message)
         {
             _currentlyplaying = message.Movie;
+
+            Sender.Tell(new NowPlayingMessage(this._currentlyplaying));
         }
     }
 }
