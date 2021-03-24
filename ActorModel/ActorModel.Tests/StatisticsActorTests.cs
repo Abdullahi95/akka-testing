@@ -58,6 +58,30 @@ namespace ActorModel.Tests
 
         }
 
+        [Fact]
+        public void Initial_StatisticsMessage_Should_Update_PlayCounts()
+        {
+            // arrange
+            TestActorRef<StatisticsActor> statisticsActor = ActorOfAsTestActorRef<StatisticsActor>();
+
+            // act
+            var movies = new Dictionary<string, int>() { { "Locked Down", 3 }, { "Outside the Wire", 2 } };
+            
+            var message = new InitialStatisticsMessage(new ReadOnlyDictionary<string, int>(movies));
+            statisticsActor.Tell(message);
+
+            statisticsActor.Tell("Outside the wire");
+
+            // assert
+            Assert.Equal(2, statisticsActor.UnderlyingActor.PlayCounts["Outside the Wire"]);
+
+
+            
+
+        }
+
+
+
 
     }
 }

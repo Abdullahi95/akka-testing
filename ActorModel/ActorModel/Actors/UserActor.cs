@@ -11,18 +11,23 @@ namespace ActorModel.Actors
 {
     public class UserActor : ReceiveActor
     {
-        public string _currentlyplaying { get; private set; }
+        public string Currentlyplaying { get; private set; }
+        public IActorRef ActorRef { get; private set; }
 
-        public UserActor()
+        public UserActor(IActorRef actorRef)
         {
+            this.ActorRef = actorRef;
+
             this.Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message));
         }
 
         private void HandlePlayMovieMessage(PlayMovieMessage message)
         {
-            _currentlyplaying = message.Movie;
+            Currentlyplaying = message.Movie;
 
-            Sender.Tell(new NowPlayingMessage(this._currentlyplaying));
+            Sender.Tell(new NowPlayingMessage(this.Currentlyplaying));
+
+            this.ActorRef.Tell(message.Movie);
         }
     }
 }

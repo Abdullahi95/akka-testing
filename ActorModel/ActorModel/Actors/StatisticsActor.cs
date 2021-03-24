@@ -1,5 +1,6 @@
 ﻿using ActorModel.Messages;
 using Akka.Actor;
+using System;
 using System.Collections.Generic;
 
 namespace ActorModel.Actors
@@ -11,6 +12,19 @@ namespace ActorModel.Actors
         public StatisticsActor()
         {
             this.Receive<InitialStatisticsMessage>(message => HandleInitialStatisticsMessage(message));
+            this.Receive<string>(message => HandleTitleMessage(message));
+        }
+
+        private void HandleTitleMessage(string message)
+        {
+            if (PlayCounts.ContainsKey(message))
+            {
+                PlayCounts[message]++;
+            }
+            else
+            {
+                PlayCounts.Add(message, 1); 
+            }
         }
 
         public void HandleInitialStatisticsMessage(InitialStatisticsMessage message)
