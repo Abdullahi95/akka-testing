@@ -43,3 +43,9 @@ C:\akka-testing\ActorModel\ActorModel.Tests\obj\Debug\ActorModel.Tests.csproj.Co
 C:\akka-testing\ActorModel\ActorModel.Tests\obj\Debug\ActorModel.Tests.csproj.CopyComplete
 C:\akka-testing\ActorModel\ActorModel.Tests\obj\Debug\ActorModel.Tests.dll
 C:\akka-testing\ActorModel\ActorModel.Tests\obj\Debug\ActorModel.Tests.pdb
+C:\akka-testing\ActorModel\ActorModel.Tests\bin\Debug\Castle.Core.dll
+C:\akka-testing\ActorModel\ActorModel.Tests\bin\Debug\Moq.dll
+C:\akka-testing\ActorModel\ActorModel.Tests\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\akka-testing\ActorModel\ActorModel.Tests\bin\Debug\Castle.Core.xml
+C:\akka-testing\ActorModel\ActorModel.Tests\bin\Debug\Moq.xml
+C:\akka-testing\ActorModel\ActorModel.Tests\bin\Debug\System.Threading.Tasks.Extensions.xml
