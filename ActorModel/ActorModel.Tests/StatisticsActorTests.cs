@@ -6,6 +6,7 @@ using ActorModel.Messages;
 using System.Collections.ObjectModel;
 using Akka.Actor;
 using Akka.TestKit;
+using Akka.TestKit.TestActors;
 
 namespace ActorModel.Tests
 {
@@ -16,7 +17,7 @@ namespace ActorModel.Tests
         public void ShouldHaveInitialPlayCountsValue()
         {
             // arrange
-            StatisticsActor statisticsActor = new StatisticsActor();
+            StatisticsActor statisticsActor = new StatisticsActor(null);
 
             // act
             var expected = statisticsActor.PlayCounts;
@@ -29,7 +30,7 @@ namespace ActorModel.Tests
         public void ShouldSetInitialPlayCounts()
         {
             // arrange
-            StatisticsActor statisticsActor = new StatisticsActor();
+            StatisticsActor statisticsActor = new StatisticsActor(null);
 
             // act
             var movies = new Dictionary<string, int>() { { "Locked Down", 3 }, { "Outside the Wire", 1 } };
@@ -45,7 +46,7 @@ namespace ActorModel.Tests
         {
             // Arrange
             // We have created an actor that is running in our test actor system.
-            TestActorRef<StatisticsActor> statisticsActor = ActorOfAsTestActorRef<StatisticsActor>();
+            TestActorRef<StatisticsActor> statisticsActor = ActorOfAsTestActorRef<StatisticsActor>(Props.Create(() => new StatisticsActor(ActorOf(BlackHoleActor.Props))));
 
             // Act
             var movies = new Dictionary<string, int>() { { "Locked Down", 3 }, { "Outside the Wire", 1 } };
@@ -62,7 +63,7 @@ namespace ActorModel.Tests
         public void Initial_StatisticsMessage_Should_Update_PlayCounts()
         {
             // arrange
-            TestActorRef<StatisticsActor> statisticsActor = ActorOfAsTestActorRef<StatisticsActor>();
+            TestActorRef<StatisticsActor> statisticsActor = ActorOfAsTestActorRef<StatisticsActor>(Props.Create(() => new StatisticsActor(ActorOf(BlackHoleActor.Props))));
 
             // act
             var movies = new Dictionary<string, int>() { { "Locked Down", 3 }, { "Outside the Wire", 2 } };

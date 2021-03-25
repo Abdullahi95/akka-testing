@@ -40,7 +40,7 @@ namespace ActorModel.Tests
         public void ShouldReceiveNowPlayingMessage()
         {
             // arrange
-            IActorRef statisticsActor = ActorOf<StatisticsActor>();
+            IActorRef statisticsActor = ActorOfAsTestActorRef<UserActor>(Props.Create(() => new UserActor(ActorOf(BlackHoleActor.Props))));
 
             // act
             statisticsActor.Tell(new PlayMovieMessage("Locked Down"));
