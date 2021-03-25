@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Akka.Actor;
 using Akka.TestKit;
 using Akka.TestKit.TestActors;
+using ActorModel.Tests.MockActors;
 
 namespace ActorModel.Tests
 {
@@ -75,9 +76,21 @@ namespace ActorModel.Tests
 
             // assert
             Assert.Equal(2, statisticsActor.UnderlyingActor.PlayCounts["Outside the Wire"]);
+        }
 
 
+        [Fact]
+        public void ShouldGetInitialStatsFromData()
+        {
+            //arrange
+
+            var mockDatabaseActorRef = ActorOfAsTestActorRef<MockDatabaseActor>();
             
+            var statisticsActorRef = ActorOfAsTestActorRef<StatisticsActor>(Props.Create(() => new StatisticsActor(mockDatabaseActorRef)));
+
+            // assert
+
+            Assert.Equal(1, statisticsActorRef.UnderlyingActor.PlayCounts["Locked Down"]);
 
         }
 
