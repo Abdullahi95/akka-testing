@@ -38,6 +38,9 @@ namespace ActorModel.Actors
         public override void AroundPreStart()
         {
             this.DatabaseActor.Tell(new GetInitialStatisticsMessage());
+
+            // Before the Statistics Actor can start receiving messages, it sends a message to our database actor, to get
+            // the initial statistics message.
         }
 
     }

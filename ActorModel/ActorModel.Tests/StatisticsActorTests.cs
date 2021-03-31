@@ -13,7 +13,6 @@ namespace ActorModel.Tests
 {
     public class StatisticsActorTests : TestKit
     {
-
         [Fact]
         public void ShouldHaveInitialPlayCountsValue()
         {
@@ -68,7 +67,7 @@ namespace ActorModel.Tests
 
             // act
             var movies = new Dictionary<string, int>() { { "Locked Down", 3 }, { "Outside the Wire", 2 } };
-            
+
             var message = new InitialStatisticsMessage(new ReadOnlyDictionary<string, int>(movies));
             statisticsActor.Tell(message);
 
@@ -82,20 +81,39 @@ namespace ActorModel.Tests
         [Fact]
         public void ShouldGetInitialStatsFromData()
         {
-            //arrange
+            // arrange
+            var testProbe = CreateTestProbe();
+            //  We can use a lambda statement here to configure what happens when our test probe recieves a message.
 
-            var mockDatabaseActorRef = ActorOfAsTestActorRef<MockDatabaseActor>();
-            
-            var statisticsActorRef = ActorOfAsTestActorRef<StatisticsActor>(Props.Create(() => new StatisticsActor(mockDatabaseActorRef)));
+            var messageHandler = new DelegateAutoPilot(
+                (sender, message) =>
+                {
+                    if (message is GetInitialStatisticsMessage)
+                    {
+                        var storedStats = new Dictionary<string, int>() { { "Locked Down", 1 } };
+                        sender.Tell(new InitialStatisticsMessage(playCounts: new ReadOnlyDictionary<string, int>(storedStats)));
+                    }
+
+                    return AutoPilot.KeepRunning;
+                });
+
+            testProbe.SetAutoPilot(messageHandler);
+
+            var statisticsActorRef = ActorOfAsTestActorRef<StatisticsActor>(Props.Create(() => new StatisticsActor(testProbe)));
 
             // assert
-
             Assert.Equal(1, statisticsActorRef.UnderlyingActor.PlayCounts["Locked Down"]);
-
         }
 
+        [Fact]
+        public void ShouldAskDatabaseForInitialStats()
+        {
+            var testProbe = CreateTestProbe();
 
+            var actorRef = ActorOfAsTestActorRef<StatisticsActor>(Props.Create(() => new StatisticsActor(testProbe)));
 
+            testProbe.ExpectMsg<GetInitialStatisticsMessage>();
+        }
 
     }
 }
